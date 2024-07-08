@@ -52,7 +52,7 @@ export default function Page() {
             >
                 <ImageCard
                     title={image.name}
-                    width={image.size}
+                    size={image.size}
                     dateUploaded={image.uploadedAt?.toString()}
                     imageUrl={image.url}
                 />
