@@ -1,23 +1,23 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
-import { Template } from '@/components/Template';
-import { ImageCard } from '@/components/ImageCard';
-import { useImageService } from '@/resources/image/image.service';
-import { ImageResponse } from '@/resources/image/image.resource';
-import { motion } from "framer-motion";
+import React, {useEffect, useState} from "react";
+import {Template} from '@/components/Template';
+import {ImageCard} from '@/components/ImageCard';
+import {useImageService} from '@/resources/image/image.service';
+import {ImageResponse} from '@/resources/image/image.resource';
+import {motion} from "framer-motion";
 
 const imageExtensions = [
-    { label: 'All formats', value: '' },
-    { label: 'PNG', value: 'png' },
-    { label: 'JPEG', value: 'jpeg' },
-    { label: 'SVG', value: 'svg' },
-    { label: 'GIF', value: 'gif' },
-    { label: 'BMP', value: 'bmp' },
-    { label: 'TIFF', value: 'tiff' },
-    { label: 'WebP', value: 'webp' },
-    { label: 'HEIF', value: 'heif' },
-    { label: 'AVIF', value: 'avif' },
+    {label: 'All formats', value: ''},
+    {label: 'PNG', value: 'png'},
+    {label: 'JPEG', value: 'jpeg'},
+    {label: 'SVG', value: 'svg'},
+    {label: 'GIF', value: 'gif'},
+    {label: 'BMP', value: 'bmp'},
+    {label: 'TIFF', value: 'tiff'},
+    {label: 'WebP', value: 'webp'},
+    {label: 'HEIF', value: 'heif'},
+    {label: 'AVIF', value: 'avif'},
 ];
 
 export default function Page() {
@@ -46,15 +46,16 @@ export default function Page() {
         return images.map((image, index) => (
             <motion.div
                 key={image.url}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                transition={{delay: index * 0.2}}
             >
                 <ImageCard
                     title={image.name}
                     size={image.size}
                     dateUploaded={image.uploadedAt?.toString()}
                     imageUrl={image.url}
+                    extension={image.extension}
                 />
             </motion.div>
         ));

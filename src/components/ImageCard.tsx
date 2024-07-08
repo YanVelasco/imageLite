@@ -1,15 +1,14 @@
 import React from "react";
 
 interface ImageCardProps {
-    title?: string;
-    size?: number; // Size in bytes
-    dateUploaded?: string;
-    imageUrl?: string;
+    title?: string,
+    size?: number,
+    dateUploaded?: string,
+    imageUrl?: string,
+    extension?: string | undefined
 }
 
 export class ImageCard extends React.Component<ImageCardProps> {
-
-    // Função utilitária para converter bytes em MB ou KB
     formatFileSize = (bytes: number): string => {
         const KB = 1024;
         const MB = 1024 * KB;
@@ -22,7 +21,6 @@ export class ImageCard extends React.Component<ImageCardProps> {
         }
     };
 
-    // Função utilitária para formatar a data
     formatDate = (dateString: string): string => {
         const date = new Date(dateString);
         return new Intl.DateTimeFormat('default', {
@@ -44,7 +42,8 @@ export class ImageCard extends React.Component<ImageCardProps> {
             title,
             size,
             dateUploaded,
-            imageUrl
+            imageUrl,
+            extension, // Corrigido: Adicionada a vírgula que faltava
         } = this.props;
 
         return (
@@ -60,6 +59,9 @@ export class ImageCard extends React.Component<ImageCardProps> {
                         </p>
                         <p className="text-gray-600">
                             {dateUploaded ? this.formatDate(dateUploaded) : 'Unknown upload date'}
+                        </p>
+                        <p className="text-gray-600">
+                            {extension ? extension : `Unknown extension`}
                         </p>
                         <button onClick={this.downloadImage}
                                 className="absolute bottom-0 right-0 bg-blue-500 text-white px-4 py-2 rounded-md text-sm m-4 hover:bg-blue-700">
