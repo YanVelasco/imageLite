@@ -26,12 +26,15 @@ export default function Page() {
     const [extension, setExtension] = useState<string>('');
     const [query, setQuery] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     async function getImages() {
         try {
+            setIsLoading(true);
             const normalizedExtension = extension.toLowerCase(); // Normaliza a extensão para minúsculas
             const result = await imageService.getImages(normalizedExtension, query);
             setImages(result);
+            setIsLoading(false);
             setError(null);
         } catch (error: any) {
             setError(error.message);
@@ -62,7 +65,7 @@ export default function Page() {
     }
 
     return (
-        <Template>
+        <Template loading={isLoading}>
             <section className="flex flex-col items-center justify-center my-5">
                 <div className="flex space-x-4">
                     <select
