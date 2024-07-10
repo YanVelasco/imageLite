@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 interface InputProps {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   className?: string;
   textColor: string;
