@@ -5,7 +5,7 @@ interface TemplateProps {
     loading?: boolean;
 }
 
-export const Template: React.FC<TemplateProps> = ({children, loading}) => {
+export const TemplateDefault: React.FC<TemplateProps> = ({children, loading}) => {
     return (
         <div className="flex flex-col min-h-screen">
             <Header/>

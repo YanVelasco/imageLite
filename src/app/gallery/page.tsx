@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useEffect, useState } from "react";
-import { Template } from '@/components/templateDefault/Template';
+import { TemplateDefault } from '@/components/templateDefault/Template';
 import { ImageCard } from '@/components/imageCard/ImageCard';
 import { useImageService } from '@/resources/image/image.service';
 import { ImageResponse } from '@/resources/image/image.resource';
@@ -67,7 +67,7 @@ export default function Page() {
     }
 
     return (
-        <Template loading={isLoading}>
+        <TemplateDefault loading={isLoading}>
             <section className="flex flex-col items-center justify-center my-5">
                 <div className="flex space-x-4">
                     <select
@@ -103,6 +103,6 @@ export default function Page() {
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                 {renderingImagesCard()}
             </section>
-        </Template>
+        </TemplateDefault>
     );
 }
