@@ -1,12 +1,14 @@
 'use client';
 
 import React, {useEffect, useState} from "react";
-import {Template} from '@/components/Template';
-import {ImageCard} from '@/components/ImageCard';
+import {Template} from '@/components/templateDefault/Template';
+import {ImageCard} from '@/components/imageCard/ImageCard';
 import {useImageService} from '@/resources/image/image.service';
 import {ImageResponse} from '@/resources/image/image.resource';
 import {motion} from "framer-motion";
 import Link from "next/link";
+import {Button} from "@/components/button/Button";
+import {LinkButton} from "@/components/linkButton/LinkButton";
 
 const imageExtensions = [
     {label: 'All formats', value: ''},
@@ -87,19 +89,12 @@ export default function Page() {
                         onChange={(e) => setQuery(e.target.value)}
                         className="p-2 border border-gray-300 rounded-lg text-gray-900"
                     />
-                    <button
-                        onClick={getImages}
-                        className="ml-2 p-2 bg-blue-500 text-white hover:bg-blue-700"
-                    >
+                    <Button onClick={getImages} bgColor="blue" textColor="text-white">
                         Search
-                    </button>
-                    <Link href="/form">
-                        <button
-                            className="ml-2 p-2 bg-yellow-500 text-white hover:bg-yellow-700"
-                        >
-                            Add new image
-                        </button>
-                    </Link>
+                    </Button>
+                    <LinkButton href="/form" bgColor="yellow" textColor="text-white">
+                        Add new image
+                    </LinkButton>
                 </div>
             </section>
             {error && <div className="text-red-500">{error}</div>}
