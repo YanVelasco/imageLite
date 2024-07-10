@@ -1,15 +1,14 @@
 'use client';
 
-import React, {useEffect, useState} from "react";
-import {Template} from '@/components/templateDefault/Template';
-import {ImageCard} from '@/components/imageCard/ImageCard';
-import {useImageService} from '@/resources/image/image.service';
-import {ImageResponse} from '@/resources/image/image.resource';
-import {motion} from "framer-motion";
-import Link from "next/link";
-import {Button} from "@/components/button/Button";
-import {LinkButton} from "@/components/linkButton/LinkButton";
-
+import React, {useEffect, useState } from "react";
+import { Template } from '@/components/templateDefault/Template';
+import { ImageCard } from '@/components/imageCard/ImageCard';
+import { useImageService } from '@/resources/image/image.service';
+import { ImageResponse } from '@/resources/image/image.resource';
+import { motion } from "framer-motion";
+import { Button } from "@/components/button/Button";
+import { LinkButton } from "@/components/linkButton/LinkButton";
+import { Input } from "@/components/input/Input";
 const imageExtensions = [
     {label: 'All formats', value: ''},
     {label: 'PNG', value: 'png'},
@@ -46,7 +45,7 @@ export default function Page() {
 
     useEffect(() => {
         getImages();
-    }, [extension, query]);
+    }, []);
 
     function renderingImagesCard() {
         return images.map((image, index) => (
@@ -82,12 +81,15 @@ export default function Page() {
                             </option>
                         ))}
                     </select>
-                    <input
+                    <Input
                         type="text"
                         placeholder="Search images..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         className="p-2 border border-gray-300 rounded-lg text-gray-900"
+                        borderColor="gray"
+                        textColor="gray"
+                        onEnterPress={getImages} // Adiciona a função getImages ao pression
                     />
                     <Button onClick={getImages} bgColor="blue" textColor="text-white">
                         Search
