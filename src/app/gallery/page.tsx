@@ -33,7 +33,7 @@ export default function Page() {
     async function getImages() {
         try {
             setIsLoading(true);
-            const normalizedExtension = extension.toLowerCase(); // Normaliza a extensão para minúsculas
+            const normalizedExtension = extension.toLowerCase();
             const result = await imageService.getImages(normalizedExtension, query);
             setImages(result);
             setIsLoading(false);
@@ -45,7 +45,7 @@ export default function Page() {
 
     useEffect(() => {
         getImages();
-    }, []);
+    }, [extension, query]);
 
     function renderingImagesCard() {
         return images.map((image, index) => (
