@@ -6,6 +6,7 @@ import {ImageCard} from '@/components/ImageCard';
 import {useImageService} from '@/resources/image/image.service';
 import {ImageResponse} from '@/resources/image/image.resource';
 import {motion} from "framer-motion";
+import Link from "next/link";
 
 const imageExtensions = [
     {label: 'All formats', value: ''},
@@ -92,11 +93,13 @@ export default function Page() {
                     >
                         Search
                     </button>
-                    <button
-                        className="ml-2 p-2 bg-yellow-500 text-white hover:bg-yellow-700"
-                    >
-                        Add new image
-                    </button>
+                    <Link href="/form">
+                        <button
+                            className="ml-2 p-2 bg-yellow-500 text-white hover:bg-yellow-700"
+                        >
+                            Add new image
+                        </button>
+                    </Link>
                 </div>
             </section>
             {error && <div className="text-red-500">{error}</div>}
