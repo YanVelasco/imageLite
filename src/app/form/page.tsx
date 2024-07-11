@@ -6,9 +6,10 @@ import { Input } from "@/components/input/Input";
 import { Button } from "@/components/button/Button";
 import { LinkButton } from "@/components/linkButton/LinkButton";
 import { useFormik } from "formik";
+import * as Yup from 'yup';
 import { RenderIf } from "@/components/templateDefault/Template";
 import { useImageService } from '@/resources/image/image.service';
-import {useNotificationMessage} from "@/components/notificationMessage/NotificationMessage"; // Ajuste o caminho conforme necessário
+import { useNotificationMessage } from "@/components/notificationMessage/NotificationMessage"; // Ajuste o caminho conforme necessário
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
@@ -24,6 +25,12 @@ const formScheme: FormValues = {
     file: null
 };
 
+const validationSchema = Yup.object({
+    name: Yup.string().required('Image name is required'),
+    tags: Yup.string().required('Tags are required'),
+    file: Yup.mixed().required('An image file is required')
+});
+
 export default function Page() {
     const [isLoading, setIsLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
@@ -32,6 +39,7 @@ export default function Page() {
 
     const formik = useFormik({
         initialValues: formScheme,
+        validationSchema,
         onSubmit: async (values) => {
             setIsLoading(true);
             try {
@@ -70,6 +78,14 @@ export default function Page() {
         }
     };
 
+    const displayErrorMessages = () => {
+        Object.keys(formik.errors).forEach((key) => {
+            if (formik.errors[key as keyof FormValues]) {
+                error(formik.errors[key as keyof FormValues] as string);
+            }
+        });
+    };
+
     return (
         <TemplateDefault loading={isLoading}>
             <ToastContainer />
@@ -77,7 +93,13 @@ export default function Page() {
                 <h2 className="text-3xl font-extrabold mt-4 mb-10 tracking-tight text-gray-900">
                     New image
                 </h2>
-                <form onSubmit={formik.handleSubmit} className="flex flex-col items-center justify-center gap-4">
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!formik.isValid) {
+                        displayErrorMessages();
+                    }
+                    formik.handleSubmit(e);
+                }} className="flex flex-col items-center justify-center gap-4">
                     <div className="flex flex-col items-center justify-center">
                         <label className="text-gray-600" htmlFor="name">Image name:</label>
                         <Input
