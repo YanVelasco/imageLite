@@ -8,6 +8,9 @@ import { LinkButton } from "@/components/linkButton/LinkButton";
 import { useFormik } from "formik";
 import { RenderIf } from "@/components/templateDefault/Template";
 import { useImageService } from '@/resources/image/image.service';
+import {useNotificationMessage} from "@/components/notificationMessage/NotificationMessage"; // Ajuste o caminho conforme necessário
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 interface FormValues {
     name: string;
@@ -25,6 +28,7 @@ export default function Page() {
     const [isLoading, setIsLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
     const imageService = useImageService();
+    const { success, error } = useNotificationMessage();
 
     const formik = useFormik({
         initialValues: formScheme,
@@ -47,11 +51,11 @@ export default function Page() {
         }
         try {
             await imageService.saveImage(formData);
-        } catch (error) {
-            console.error(error);
+            success('Image uploaded successfully!');
+        } catch (err) {
+            error(`Image with name ${data.name} already exists`);
+            console.error(err);
         }
-        formik.resetForm();
-        setImagePreview(null);
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +72,7 @@ export default function Page() {
 
     return (
         <TemplateDefault loading={isLoading}>
+            <ToastContainer />
             <section className="flex flex-col items-center justify-center">
                 <h2 className="text-3xl font-extrabold mt-4 mb-10 tracking-tight text-gray-900">
                     New image
