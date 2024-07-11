@@ -94,7 +94,7 @@ export default function Page() {
                     <Button onClick={getImages} bgColor="blue" textColor="text-white">
                         Search
                     </Button>
-                    <LinkButton href="/form" bgColor="yellow" textColor="text-white">
+                    <LinkButton href={"/form"} className={"bg-yellow-500 text-white ml-2 p-2 hover:bg-yellow-700"}>
                         Add new image
                     </LinkButton>
                 </div>

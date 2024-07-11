@@ -19,6 +19,20 @@ class ImageService {
         const text = await response.text();
         return text ? JSON.parse(text) : [];
     }
+
+    async saveImage(data: FormData): Promise<String> {
+        const response = await fetch(this.baseUrl, {
+            method: 'POST',
+            body: data
+        });
+
+        if (!response.ok) {
+            // Handle HTTP errors
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return response.headers.get('Location') ?? '';
+    }
 }
 
 export const useImageService = () => {
