@@ -3,11 +3,11 @@ import React, {useEffect, useRef} from "react";
 interface InputProps {
     value?: string,
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    placeholder: string,
+    placeholder?: string,
     className?: string,
-    textColor: string,
-    type: string,
-    borderColor: string,
+    textColor?: string,
+    type?: string,
+    borderColor?: string,
     onEnterPress?: () => void,
     id?: string,
     name?: string
