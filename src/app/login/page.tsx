@@ -3,11 +3,23 @@
 import {RenderIf, TemplateDefault} from "@/components/templateDefault/Template";
 import {useState} from "react";
 import {Input} from "@/components/input/Input";
-import {Button} from "@/components/button/Button";
+import {validationScheme, LoginFormData, initialValues} from "@/app/login/formScheme";
+import {useFormik} from "formik";
 
 export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const [newUser, setNewUser] = useState(false);
+
+    const {values, handleChange, handleSubmit, errors} = useFormik<LoginFormData>({
+        initialValues: initialValues,
+        validationSchema: validationScheme,
+        onSubmit: onSubmit
+    });
+
+    async function onSubmit(values: LoginFormData) {
+        console.log('Form submitted:', values)
+    }
+
 
     return (
         <TemplateDefault loading={isLoading}>
@@ -33,14 +45,17 @@ export default function Login() {
                                     id="name"
                                     type="text"
                                     placeholder="Name"
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-600"
+                                    value={values.name}
+                                    onChange={handleChange}
+                                    error={errors.name}
                                 />
                             </div>
                         </div>
                     </div>
                 </RenderIf>
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form onSubmit={handleSubmit} className="space-y-6" action="#" method="POST">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                 Email address
@@ -49,7 +64,11 @@ export default function Login() {
                                 id="email"
                                 type="text"
                                 placeholder="Email address"
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
+                                text-gray-600"
+                                value={values.email}
+                                onChange={handleChange}
+                                error={errors.email}
                             />
                         </div>
                         <div>
@@ -60,7 +79,11 @@ export default function Login() {
                                 id="password"
                                 type="password"
                                 placeholder="Password"
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
+                                text-gray-600"
+                                value={values.password}
+                                onChange={handleChange}
+                                error={errors.password}
                             />
                         </div>
                         <RenderIf condition={newUser}>
@@ -72,7 +95,10 @@ export default function Login() {
                                     id="passwordMatcher"
                                     type="password"
                                     placeholder="Repeat Password"
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-600"
+                                    value={values.passwordMatcher}
+                                    onChange={handleChange}
+                                    error={errors.passwordMatcher}
                                 />
                             </div>
                         </RenderIf>
@@ -85,7 +111,7 @@ export default function Login() {
                                     Sign up
                                 </button>
                                 <button
-                                    type="submit"
+                                    type="button"
                                     className="w-full flex justify-center p-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                     onClick={() => setNewUser(false)}
                                 >

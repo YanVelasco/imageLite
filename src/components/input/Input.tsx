@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 
 interface InputProps {
     value?: string,
@@ -10,21 +10,23 @@ interface InputProps {
     borderColor?: string,
     onEnterPress?: () => void,
     id?: string,
-    name?: string
+    name?: string,
+    error?: string | {} | undefined
 }
 
 export const Input: React.FC<InputProps> = ({
-                                                value,
-                                                onChange,
-                                                placeholder,
-                                                className,
-                                                textColor,
-                                                type,
-                                                borderColor,
-                                                onEnterPress,
-                                                id,
-                                                name
-                                            }) => {
+    value,
+    onChange,
+    placeholder,
+    className,
+    textColor,
+    type,
+    borderColor,
+    onEnterPress,
+    id,
+    name,
+    error
+}) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -40,15 +42,19 @@ export const Input: React.FC<InputProps> = ({
     };
 
     return (
-        <input
-            ref={inputRef}
-            type={type}
-            value={value}
-            name={name}
-            onChange={onChange}
-            placeholder={placeholder}
-            className={`p-2 border border-${borderColor}-300 rounded-lg text-${textColor}-900 ${className}`}
-            onKeyDown={handleKeyDown}
-        />
+        <div>
+            <input
+                ref={inputRef}
+                id={id}
+                type={type}
+                value={value}
+                name={name}
+                onChange={onChange}
+                placeholder={placeholder}
+                className={`p-2 border border-${borderColor}-300 rounded-lg text-${textColor}-900 ${className}`}
+                onKeyDown={handleKeyDown}
+            />
+            {error && typeof error === 'string' && <div className="text-red-500 text-sm mt-1">{error}</div>}
+        </div>
     );
 };
