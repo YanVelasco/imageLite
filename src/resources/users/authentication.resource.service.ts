@@ -44,21 +44,38 @@ class AuthService {
         if (token.accessToken) {
             const decodedToken: UserSessionToken = jwtDecode(token.accessToken);
 
-            // Convert 'exp' from seconds to milliseconds to create a Date object
-
             const userSessionToken: UserSessionToken = {
                 name: decodedToken.name,
                 email: decodedToken.email,
                 accessToken: token.accessToken,
                 exp: decodedToken.exp
             }
-            console.log(userSessionToken);
             this.setUserSessionToken(userSessionToken);
         }
     }
 
     setUserSessionToken(userSessionToken: UserSessionToken){
         localStorage.setItem(AuthService.AUTH_PARAM, JSON.stringify(userSessionToken));
+    }
+
+    getUserSessionToken(): UserSessionToken | null {
+        const userSessionToken = localStorage.getItem(AuthService.AUTH_PARAM);
+        if (userSessionToken) {
+            return JSON.parse(userSessionToken);
+        }
+        return null;
+    }
+
+    isSessionValid(): boolean {
+        const userSessionToken = this.getUserSessionToken();
+        if (userSessionToken) {
+            const now = Date.now();
+            const exp = userSessionToken.exp ? userSessionToken.exp * 1000 : 0;
+            if (now < exp) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
