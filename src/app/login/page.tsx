@@ -9,6 +9,8 @@ import { useFormik } from "formik";
 import { AccessToken } from "@/resources/users/users.resources";
 import { useRouter } from "next/navigation";
 import { authService } from "@/resources/users/authentication.resource.service";
+import {toast} from "react-toastify";
+import success = toast.success;
 
 export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +39,24 @@ export default function Login() {
                 setError(null);
             } catch (err: any) {
                 setError(err.message);
-                notifyError('Authentication failed. Please try again.');
+                notifyError('Email or password is incorrect.');
+            } finally {
+                setIsLoading(false);
+            }
+        } else {
+            const user = {
+                name: values.name,
+                email: values.email,
+                password: values.password,
+            };
+            try {
+                await authService.saveUser(user);
+                setNewUser(false);
+                setError(null);
+                success('User created successfully!');
+            } catch (err: any) {
+                setError(err.message);
+                notifyError(`User already exists with email ${values.email}. Please try again`);
             } finally {
                 setIsLoading(false);
             }
@@ -71,7 +90,6 @@ export default function Login() {
                                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-600"
                                     value={values.name}
                                     onChange={handleChange}
-                                    error={errors.name}
                                 />
                             </div>
                         </div>
@@ -90,7 +108,6 @@ export default function Login() {
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-600"
                                 value={values.email}
                                 onChange={handleChange}
-                                error={errors.email}
                             />
                         </div>
                         <div>
@@ -104,7 +121,6 @@ export default function Login() {
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-600"
                                 value={values.password}
                                 onChange={handleChange}
-                                error={errors.password}
                             />
                         </div>
                         <RenderIf condition={newUser}>
@@ -119,11 +135,9 @@ export default function Login() {
                                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-600"
                                     value={values.passwordMatcher}
                                     onChange={handleChange}
-                                    error={errors.passwordMatcher}
                                 />
                             </div>
                         </RenderIf>
-                        {error && <div className="text-red-500 mt-2">{error}</div>}
                         <div>
                             <RenderIf condition={newUser}>
                                 <button

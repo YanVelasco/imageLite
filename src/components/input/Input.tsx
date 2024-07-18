@@ -11,7 +11,6 @@ interface InputProps {
     onEnterPress?: () => void,
     id?: string,
     name?: string,
-    error?: string | {} | undefined
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -25,7 +24,6 @@ export const Input: React.FC<InputProps> = ({
     onEnterPress,
     id,
     name,
-    error
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -54,7 +52,6 @@ export const Input: React.FC<InputProps> = ({
                 className={`p-2 border border-${borderColor}-300 rounded-lg text-${textColor}-900 ${className}`}
                 onKeyDown={handleKeyDown}
             />
-            {error && typeof error === 'string' && <div className="text-red-500 text-sm mt-1">{error}</div>}
         </div>
     );
 };
