@@ -13,9 +13,9 @@ export class AccessToken{
     accessToken?: string;
 }
 
-export class UserSessionToken{
-    name?: string;
-    email?: string;
-    accessToken?: string;
-    expiresAt?: number;
+export interface UserSessionToken {
+    name: string;
+    email: string;
+    accessToken: string;
+    exp?: number
 }

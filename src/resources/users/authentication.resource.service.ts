@@ -1,4 +1,5 @@
-import {User, AuthUser, UserSessionToken, AccessToken} from "@/resources/users/users.resources";
+import {User, AuthUser, AccessToken, UserSessionToken} from "@/resources/users/users.resources";
+import jwtDecode from "jwt-decode";
 
 class AuthService {
     authBaseUrl = "http://localhost:8080/v1/user/auth";
@@ -37,6 +38,27 @@ class AuthService {
         }
 
         return await response.json();
+    }
+
+    initialUserSessionToken(token: AccessToken) {
+        if (token.accessToken) {
+            const decodedToken: UserSessionToken = jwtDecode(token.accessToken);
+
+            // Convert 'exp' from seconds to milliseconds to create a Date object
+
+            const userSessionToken: UserSessionToken = {
+                name: decodedToken.name,
+                email: decodedToken.email,
+                accessToken: token.accessToken,
+                exp: decodedToken.exp
+            }
+            console.log(userSessionToken);
+            this.setUserSessionToken(userSessionToken);
+        }
+    }
+
+    setUserSessionToken(userSessionToken: UserSessionToken){
+        localStorage.setItem(AuthService.AUTH_PARAM, JSON.stringify(userSessionToken));
     }
 }
 

@@ -36,6 +36,7 @@ export default function Login() {
             try {
                 const accessToken: AccessToken = await authService.authenticate(credentials);
                 router.push('/gallery');
+                authService.initialUserSessionToken(accessToken);
                 setError(null);
             } catch (err: any) {
                 setError(err.message);
