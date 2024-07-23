@@ -2,7 +2,7 @@ import {User, AuthUser, AccessToken, UserSessionToken} from "@/resources/users/u
 import jwtDecode from "jwt-decode";
 
 class AuthService {
-    authBaseUrl = "http://localhost:8080/v1/user/auth";
+    authBaseUrl = "http://localhost:8080/v1/users/auth";
     userBaseUrl = "http://localhost:8080/v1/users";
     static AUTH_PARAM = "_auth";
 
