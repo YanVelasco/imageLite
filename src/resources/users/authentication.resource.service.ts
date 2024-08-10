@@ -77,6 +77,10 @@ class AuthService {
         }
         return false;
     }
+
+    logout() {
+        localStorage.removeItem(AuthService.AUTH_PARAM);
+    }
 }
 
 export const authService = new AuthService();
