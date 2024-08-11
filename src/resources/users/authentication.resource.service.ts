@@ -1,9 +1,9 @@
-import {User, AuthUser, AccessToken, UserSessionToken} from "@/resources/users/users.resources";
+import { User, AuthUser, AccessToken, UserSessionToken } from "@/resources/users/users.resources";
 import jwtDecode from "jwt-decode";
 
 class AuthService {
-    authBaseUrl = "http://localhost:8080/v1/users/auth";
-    userBaseUrl = "http://localhost:8080/v1/users";
+    authBaseUrl = process.env.NEXT_PUBLIC_API_URL + "/v1/users/auth";
+    userBaseUrl = process.env.NEXT_PUBLIC_API_URL + "/v1/users";
     static AUTH_PARAM = "_auth";
 
     async authenticate(authUser: AuthUser): Promise<AccessToken> {
@@ -22,7 +22,7 @@ class AuthService {
         return await response.json();
     }
 
-    async saveUser(user: User, ): Promise<void>{
+    async saveUser(user: User): Promise<void> {
         const response = await fetch(this.userBaseUrl, {
             method: "POST",
             headers: {
@@ -31,7 +31,7 @@ class AuthService {
             body: JSON.stringify(user),
         });
 
-        console.log(response)
+        console.log(response);
 
         if (!response.ok) {
             throw new Error("User already exists");
@@ -48,20 +48,33 @@ class AuthService {
                 name: decodedToken.name,
                 email: decodedToken.email,
                 accessToken: token.accessToken,
-                exp: decodedToken.exp
-            }
+                exp: decodedToken.exp,
+            };
             this.setUserSessionToken(userSessionToken);
         }
     }
 
-    setUserSessionToken(userSessionToken: UserSessionToken){
-        localStorage.setItem(AuthService.AUTH_PARAM, JSON.stringify(userSessionToken));
+    setUserSessionToken(userSessionToken: UserSessionToken) {
+        if (typeof window !== "undefined") {
+            try {
+                localStorage.setItem(AuthService.AUTH_PARAM, JSON.stringify(userSessionToken));
+            } catch (e) {
+                console.error(e);
+            }
+        }
     }
 
     getUserSessionToken(): UserSessionToken | null {
-        const userSessionToken = localStorage.getItem(AuthService.AUTH_PARAM);
-        if (userSessionToken) {
-            return JSON.parse(userSessionToken);
+        if (typeof window !== "undefined") {
+            try {
+                const userSessionToken = localStorage.getItem(AuthService.AUTH_PARAM);
+                if (userSessionToken) {
+                    return JSON.parse(userSessionToken);
+                }
+            } catch (e) {
+                console.error(e);
+                return null;
+            }
         }
         return null;
     }
@@ -79,7 +92,9 @@ class AuthService {
     }
 
     logout() {
-        localStorage.removeItem(AuthService.AUTH_PARAM);
+        if (typeof window !== "undefined") {
+            localStorage.removeItem(AuthService.AUTH_PARAM);
+        }
     }
 }
 

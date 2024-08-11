@@ -2,7 +2,7 @@ import { ImageResponse } from './image.resource';
 import {authService} from "@/resources/users/authentication.resource.service";
 
 class ImageService {
-    baseUrl = 'http://localhost:8080/v1/images';
+    baseUrl = process.env.NEXT_PUBLIC_API_URL + '/v1/images';
      auth = authService;
 
     async getImages(extension?: string, query?: string): Promise<ImageResponse[]> {
